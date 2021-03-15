@@ -2,44 +2,45 @@ import 'package:flutter/material.dart';
 
 class TransactionForm extends StatelessWidget {
   final Function addTransaction;
+  final nameController = TextEditingController();
+  final categoryController = TextEditingController();
+  final amountController = TextEditingController();
 
   TransactionForm(this.addTransaction);
 
+  void newTransaction() {
+    addTransaction(
+      DateTime.now().toString(),
+      nameController.text,
+      categoryController.text,
+      int.parse(amountController.text),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    String name;
-    String category;
-    String amount;
-
     return Column(
       children: <Widget>[
         TextField(
-          controller: TextEditingController(),
+          controller: nameController,
           decoration: InputDecoration(labelText: 'Product Name'),
-          onChanged: (value){
-            name = value;
-          },
+          onSubmitted: (_) => newTransaction,
         ),
         TextField(
-          controller: TextEditingController(),
+          controller: categoryController,
           decoration: InputDecoration(labelText: 'Product Category'),
-          onChanged: (value){
-            category = value;
-          },
+          onSubmitted: (_) => newTransaction,
         ),
         TextField(
-          controller: TextEditingController(),
+          controller: amountController,
+          keyboardType: TextInputType.number,
           decoration: InputDecoration(labelText: 'Amount (Rp)'),
-          onChanged: (value){
-            amount = value;
-          },
+          onSubmitted: (_) => newTransaction,
         ),
         Container(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: () {
-              addTransaction(DateTime.now().toString(), name, category, int.parse(amount));
-            },
+            onPressed: newTransaction,
             child: Text('Add Transaction'),
           ),
         ),

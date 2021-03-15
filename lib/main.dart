@@ -31,6 +31,12 @@ class _ExpensesState extends State<App> {
     });
   }
 
+  void deleteTransaction(int index) {
+    setState(() {
+      transactions.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -50,20 +56,18 @@ class _ExpensesState extends State<App> {
         ),
         body: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+            margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TransactionForm(addTransaction),
-                TransactionsList(transactions)
+                TransactionsList(
+                  transactions: transactions,
+                  deleteTransaction: deleteTransaction,
+                )
               ],
             ),
           ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add),
         ),
       ),
     );
