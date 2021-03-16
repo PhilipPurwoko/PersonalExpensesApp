@@ -2,19 +2,28 @@ import 'package:flutter/material.dart';
 import './widgets/transactions/transactions_list.dart';
 import './widgets/form/transaction_form.dart';
 import './models/transaction.dart';
+import './widgets/chart/chart.dart';
 
 void main() {
   runApp(App());
 }
 
-class App extends StatefulWidget {
+class App extends StatelessWidget{
   @override
-  State<StatefulWidget> createState() {
-    return _ExpensesState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Personal Expenses',
+      home: MyHomePage(),
+    );
   }
 }
 
-class _ExpensesState extends State<App> {
+class MyHomePage extends StatefulWidget {
+  @override
+  _ExpensesState createState() => _ExpensesState();
+}
+
+class _ExpensesState extends State<MyHomePage> {
   final transactions = <Transaction>[];
 
   void addTransaction(String id, String name, String category, int amount) {
@@ -37,6 +46,15 @@ class _ExpensesState extends State<App> {
     });
   }
 
+  void showForm(BuildContext context, Widget widget) {
+    showModalBottomSheet(
+      context: context,
+      builder: (builder) {
+        return widget;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -50,7 +68,9 @@ class _ExpensesState extends State<App> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.add),
-              onPressed: () {},
+              onPressed: () {
+                showForm(context, TransactionForm(addTransaction));
+              },
             ),
           ],
         ),
@@ -60,7 +80,7 @@ class _ExpensesState extends State<App> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TransactionForm(addTransaction),
+                Chart(),
                 TransactionsList(
                   transactions: transactions,
                   deleteTransaction: deleteTransaction,
