@@ -79,7 +79,7 @@ class _ExpensesState extends State<MyHomePage> {
             margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+              children: [
                 Chart(),
                 TransactionsList(
                   transactions: transactions,
