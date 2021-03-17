@@ -59,8 +59,11 @@ class TransactionsList extends StatelessWidget {
               ],
             ),
           )
-        : Center(
-            child: Text('No transactions yet. Try add something'),
+        : Container(
+          margin: EdgeInsets.all(20),
+            child: Center(
+              child: Text('No transactions yet. Try add something'),
+            ),
           );
   }
 }
