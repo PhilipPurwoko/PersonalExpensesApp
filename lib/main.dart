@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 import './widgets/transactions/transactions_list.dart';
 import './widgets/form/transaction_form.dart';
 import './models/transaction.dart';
@@ -8,7 +9,7 @@ void main() {
   runApp(App());
 }
 
-class App extends StatelessWidget{
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,7 +25,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _ExpensesState extends State<MyHomePage> {
-  final transactions = <Transaction>[];
+  final transactions = <Transaction>[
+    for (var i = 0; i < 7; i++)
+      Transaction(
+        id: '0',
+        name: 'Soto Ayam',
+        category: 'Food',
+        amount: new Random().nextInt(10000),
+        date: DateTime.now(),
+      )
+  ];
 
   void addTransaction(String id, String name, String category, int amount) {
     final transaction = new Transaction(
@@ -55,6 +65,22 @@ class _ExpensesState extends State<MyHomePage> {
     );
   }
 
+  int getMaxMinValue(
+      {List<Transaction> transaction, max = false, min = false}) {
+    return transactions
+        .map((transaction) => transaction.amount)
+        .toList()
+        .reduce((curr, next) {
+      if (max) {
+        return curr > next ? curr : next;
+      } else if (min) {
+        return curr < next ? curr : next;
+      } else {
+        return curr > next ? curr : next;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -80,7 +106,13 @@ class _ExpensesState extends State<MyHomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Chart(),
+                Chart(
+                  transactions: transactions,
+                  minExpenses:
+                      getMaxMinValue(transaction: transactions, min: true),
+                  maxExpenses:
+                      getMaxMinValue(transaction: transactions, max: true),
+                ),
                 TransactionsList(
                   transactions: transactions,
                   deleteTransaction: deleteTransaction,
