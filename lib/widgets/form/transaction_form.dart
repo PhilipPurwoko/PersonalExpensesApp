@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
   final Function addTransaction;
@@ -11,19 +12,35 @@ class TransactionForm extends StatefulWidget {
 
 class _TransactionFormState extends State<TransactionForm> {
   final nameController = TextEditingController();
-
   final categoryController = TextEditingController();
-
   final amountController = TextEditingController();
+  DateTime dateTransaction = DateTime.now();
 
   void newTransaction() {
     widget.addTransaction(
-      DateTime.now().toString(),
-      nameController.text,
-      categoryController.text,
-      int.parse(amountController.text),
+      id: dateTransaction.toString(),
+      name: nameController.text,
+      category: categoryController.text,
+      amount: int.parse(amountController.text),
+      date: dateTransaction,
     );
     Navigator.of(context).pop();
+  }
+
+  void pickDate() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(DateTime.now().year - 10),
+      lastDate: DateTime.now(),
+    ).then((DateTime date) {
+      if (date == null) {
+        return;
+      }
+      setState(() {
+        dateTransaction = date;
+      });
+    });
   }
 
   @override
@@ -48,6 +65,20 @@ class _TransactionFormState extends State<TransactionForm> {
               keyboardType: TextInputType.number,
               decoration: InputDecoration(labelText: 'Amount (Rp)'),
               onSubmitted: (_) => newTransaction,
+            ),
+            Row(
+              children: <Widget>[
+                dateTransaction != null
+                    ? Text(DateFormat.yMMMd().format(dateTransaction))
+                    : Text('No Date Choosen!'),
+                TextButton(
+                  child: Text(
+                    'Choose Date',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: pickDate,
+                ),
+              ],
             ),
             Container(
               width: double.infinity,

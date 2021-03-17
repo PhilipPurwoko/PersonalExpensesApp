@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
-import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../../models/transaction.dart';
+
 
 class Chart extends StatefulWidget {
   final List<Transaction> transactions;

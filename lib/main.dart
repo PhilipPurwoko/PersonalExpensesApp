@@ -32,17 +32,23 @@ class _ExpensesState extends State<MyHomePage> {
         name: 'Soto Ayam',
         category: 'Food',
         amount: new Random().nextInt(100000),
-        date: DateTime.now(),
+        date: new DateTime(2021, 3, 17-i),
       )
   ];
 
-  void addTransaction(String id, String name, String category, int amount) {
+  void addTransaction({
+    @required String id,
+    @required String name,
+    @required String category,
+    @required int amount,
+    @required DateTime date,
+  }) {
     final transaction = new Transaction(
       id: id,
       name: name,
       category: category,
       amount: amount,
-      date: DateTime.now(),
+      date: date,
     );
 
     setState(() {
@@ -83,6 +89,8 @@ class _ExpensesState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    transactions
+        .sort((Transaction a, Transaction b) => a.date.compareTo(b.date));
     return MaterialApp(
       title: 'Personal Expenses',
       theme: ThemeData(
@@ -122,10 +130,14 @@ class _ExpensesState extends State<MyHomePage> {
                         margin: EdgeInsets.only(top: 20),
                         padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                         height: 150,
-                        child: Center(
-                          child: Text(
-                            'Need 7 data to display chart',
-                            style: TextStyle(color: Colors.white),
+                        child: Container(
+                          margin: EdgeInsets.all(30),
+                          child: Center(
+                            child: Text(
+                              'Need minimum 1 full week data in order to display a chart',
+                              style: TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
                       ),
