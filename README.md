@@ -1,8 +1,13 @@
-# personalexpenses
+## Personal Expenses
 
-A new Flutter project.
+A tools to help you manage your daily expenses
 
-## Getting Started
+### Features
+
+- [x] Add a transaction data of expenses with an attributes of name, category, amount spent (in `IDR`), and date expenses.
+- [x] Add chart of expenses data to visualize the most or lowest day your money spent
+
+### Getting Started With Flutter
 
 This project is a starting point for a Flutter application.
 
