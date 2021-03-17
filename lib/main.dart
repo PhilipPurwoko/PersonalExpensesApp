@@ -31,7 +31,7 @@ class _ExpensesState extends State<MyHomePage> {
         id: '0',
         name: 'Soto Ayam',
         category: 'Food',
-        amount: new Random().nextInt(10000),
+        amount: new Random().nextInt(100000),
         date: DateTime.now(),
       )
   ];
@@ -106,13 +106,29 @@ class _ExpensesState extends State<MyHomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Chart(
-                  transactions: transactions,
-                  minExpenses:
-                      getMaxMinValue(transaction: transactions, min: true),
-                  maxExpenses:
-                      getMaxMinValue(transaction: transactions, max: true),
-                ),
+                transactions.length == 7
+                    ? Chart(
+                        transactions: transactions,
+                        minExpenses: getMaxMinValue(
+                            transaction: transactions, min: true),
+                        maxExpenses: getMaxMinValue(
+                            transaction: transactions, max: true),
+                      )
+                    : Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          color: Colors.black87,
+                        ),
+                        margin: EdgeInsets.only(top: 20),
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                        height: 150,
+                        child: Center(
+                          child: Text(
+                            'Need 7 data to display chart',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
                 TransactionsList(
                   transactions: transactions,
                   deleteTransaction: deleteTransaction,

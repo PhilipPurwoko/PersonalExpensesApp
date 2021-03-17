@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
+import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../../models/transaction.dart';
 
@@ -34,6 +36,11 @@ class _ChartState extends State<Chart> {
       return spots;
     }
 
+    // int getRound(int number) {
+    //   return int.parse(number.toString()[0]) *
+    //       pow(10, number.toString().length - 1);
+    // }
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -47,12 +54,6 @@ class _ChartState extends State<Chart> {
           LineChartData(
             gridData: FlGridData(
               show: false,
-              getDrawingHorizontalLine: (value) {
-                return FlLine(
-                  color: const Color(0xff37434d),
-                  strokeWidth: 1,
-                );
-              },
               getDrawingVerticalLine: (value) {
                 return FlLine(
                   color: const Color(0xff37434d),
@@ -62,6 +63,9 @@ class _ChartState extends State<Chart> {
             ),
             titlesData: FlTitlesData(
               show: true,
+              leftTitles: SideTitles(
+                showTitles: false
+              ),
               bottomTitles: SideTitles(
                 showTitles: true,
                 reservedSize: 22,
@@ -91,34 +95,6 @@ class _ChartState extends State<Chart> {
                 },
                 margin: 8,
               ),
-              leftTitles: SideTitles(
-                showTitles: true,
-                getTextStyles: (value) => const TextStyle(
-                  color: Color(0xff67727d),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-                getTitles: (value) {
-                  int getRound(number) {
-                    return (value / 1000).round() * 1000;
-                  }
-
-                  print(getRound(value));
-                  print(widget.maxExpenses);
-                  print(widget.minExpenses);
-                  print("");
-
-                  if (value == 0) {
-                    return widget.minExpenses.toString();
-                  } else if (getRound(value) == getRound(widget.maxExpenses)) {
-                    return getRound(widget.maxExpenses).toString();
-                  } else {
-                    return '';
-                  }
-                },
-                reservedSize: 28,
-                margin: 12,
-              ),
             ),
             borderData: FlBorderData(
               show: true,
@@ -136,7 +112,7 @@ class _ChartState extends State<Chart> {
                 spots: getSpots(widget.transactions),
                 isCurved: true,
                 colors: gradientColors,
-                barWidth: 5,
+                barWidth: 3,
                 isStrokeCapRound: true,
                 dotData: FlDotData(
                   show: false,
