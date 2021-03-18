@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../../models/transaction.dart';
 
 
 class Chart extends StatefulWidget {
-  final List<Transaction> transactions;
+  final List<int> transactions;
   final int minExpenses;
   final int maxExpenses;
 
@@ -26,15 +25,16 @@ class _ChartState extends State<Chart> {
 
   @override
   Widget build(BuildContext context) {
-    List<FlSpot> getSpots(List<Transaction> transactions) {
+    List<FlSpot> getSpots(List<int> transactions) {
       var spots = <FlSpot>[];
       for (int i = 0; i < 7; i++) {
         spots.add(FlSpot(
-            i.toDouble(), double.parse(transactions[i].amount.toString())));
+            i.toDouble(), double.parse(transactions[i].toString())));
       }
       return spots;
     }
 
+    // Belum butuh tapi jangan dihapus
     // int getRound(int number) {
     //   return int.parse(number.toString()[0]) *
     //       pow(10, number.toString().length - 1);

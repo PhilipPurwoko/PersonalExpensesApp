@@ -32,6 +32,7 @@ class TransactionCard extends StatelessWidget {
                 children: <Widget>[
                   Container(
                     width: 100,
+                    height: 60,
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(5),
                     margin: EdgeInsets.only(right: 10),
@@ -42,7 +43,9 @@ class TransactionCard extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      NumberFormat.compactCurrency(locale: 'idn', decimalDigits: 0, symbol: 'Rp.').format(amount),
+                      NumberFormat.compactCurrency(
+                              locale: 'idn', decimalDigits: 0, symbol: 'Rp.')
+                          .format(amount),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.blueAccent,
@@ -65,6 +68,7 @@ class TransactionCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      Text(DateFormat.EEEE().format(date)),
                       Text(DateFormat.yMMMd().format(date)),
                     ],
                   )

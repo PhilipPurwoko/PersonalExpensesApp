@@ -4,6 +4,7 @@ import './widgets/transactions/transactions_list.dart';
 import './widgets/form/transaction_form.dart';
 import './models/transaction.dart';
 import './widgets/chart/chart.dart';
+import './widgets/chart/empty_chart.dart';
 
 void main() {
   runApp(App());
@@ -32,9 +33,19 @@ class _ExpensesState extends State<MyHomePage> {
         name: 'Soto Ayam',
         category: 'Food',
         amount: new Random().nextInt(100000),
-        date: new DateTime(2021, 3, 17-i),
+        date: new DateTime(2021, 3, 17 - i),
       )
   ];
+
+  List<int> getWeeklyTransactions() {
+    Map<int, int> weekData = {for (int i = 1; i < 8; i++) i: 0};
+
+    for (Transaction transaction in transactions) {
+      weekData[transaction.date.weekday] += transaction.amount;
+    }
+    // Get Map values only
+    return [for (MapEntry<int, int> entry in weekData.entries) entry.value];
+  }
 
   void addTransaction({
     @required String id,
@@ -114,33 +125,15 @@ class _ExpensesState extends State<MyHomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                transactions.length == 7
+                transactions.length >= 7
                     ? Chart(
-                        transactions: transactions,
+                        transactions: getWeeklyTransactions(),
                         minExpenses: getMaxMinValue(
                             transaction: transactions, min: true),
                         maxExpenses: getMaxMinValue(
                             transaction: transactions, max: true),
                       )
-                    : Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          color: Colors.black87,
-                        ),
-                        margin: EdgeInsets.only(top: 20),
-                        padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                        height: 150,
-                        child: Container(
-                          margin: EdgeInsets.all(30),
-                          child: Center(
-                            child: Text(
-                              'Need minimum 1 full week data in order to display a chart',
-                              style: TextStyle(color: Colors.white),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
+                    : EmptyChart(),
                 TransactionsList(
                   transactions: transactions,
                   deleteTransaction: deleteTransaction,
