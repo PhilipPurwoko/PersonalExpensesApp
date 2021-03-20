@@ -45,31 +45,18 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
+    final node = FocusScope.of(context);
+
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.all(20),
         child: Column(
           children: <Widget>[
-            TextField(
-              controller: nameController,
-              decoration: InputDecoration(labelText: 'Product Name'),
-              onSubmitted: (_) => newTransaction,
-            ),
-            TextField(
-              controller: categoryController,
-              decoration: InputDecoration(labelText: 'Product Category'),
-              onSubmitted: (_) => newTransaction,
-            ),
-            TextField(
-              controller: amountController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Amount (Rp)'),
-              onSubmitted: (_) => newTransaction,
-            ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 dateTransaction != null
-                    ? Text(DateFormat.yMMMd().format(dateTransaction))
+                    ? Text('Date Occured : ' + DateFormat.yMMMd().format(dateTransaction))
                     : Text('No Date Choosen!'),
                 TextButton(
                   child: Text(
@@ -79,6 +66,27 @@ class _TransactionFormState extends State<TransactionForm> {
                   onPressed: pickDate,
                 ),
               ],
+            ),
+            TextField(
+              controller: nameController,
+              decoration: InputDecoration(labelText: 'Product or Service'),
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              onSubmitted: (_) => newTransaction,
+            ),
+            TextField(
+              controller: categoryController,
+              decoration: InputDecoration(labelText: 'Transaction Category'),
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              onSubmitted: (_) => newTransaction,
+            ),
+            TextField(
+              controller: amountController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Amount (Rp)'),
+              textInputAction: TextInputAction.done,
+              onSubmitted: (_) => newTransaction,
             ),
             Container(
               width: double.infinity,
