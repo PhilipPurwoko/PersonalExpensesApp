@@ -47,7 +47,6 @@ class _ChartState extends State<Chart> {
       ),
       margin: EdgeInsets.only(top: 20),
       padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-      height: 150,
       child: Center(
         child: LineChart(
           LineChartData(

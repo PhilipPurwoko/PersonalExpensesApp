@@ -10,7 +10,6 @@ class EmptyChart extends StatelessWidget {
       ),
       margin: EdgeInsets.only(top: 20),
       padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-      height: 150,
       child: Container(
         margin: EdgeInsets.all(30),
         child: Center(

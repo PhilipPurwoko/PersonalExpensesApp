@@ -5,6 +5,7 @@ import './widgets/form/transaction_form.dart';
 import './models/transaction.dart';
 import './widgets/chart/chart.dart';
 import './widgets/chart/empty_chart.dart';
+import './widgets/transactions/transaction_summary.dart';
 
 void main() {
   runApp(App());
@@ -15,6 +16,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Personal Expenses',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       home: MyHomePage(),
     );
   }
@@ -102,45 +106,57 @@ class _ExpensesState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     transactions
         .sort((Transaction a, Transaction b) => a.date.compareTo(b.date));
-    return MaterialApp(
-      title: 'Personal Expenses',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Personal Expenses'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                showForm(context, TransactionForm(addTransaction));
-              },
-            ),
-          ],
+
+    final AppBar appBar = AppBar(
+      title: Text('Personal Expenses'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () {
+            showForm(context, TransactionForm(addTransaction));
+          },
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                transactions.length >= 7
-                    ? Chart(
-                        transactions: getWeeklyTransactions(),
-                        minExpenses: getMaxMinValue(
-                            transaction: transactions, min: true),
-                        maxExpenses: getMaxMinValue(
-                            transaction: transactions, max: true),
-                      )
-                    : EmptyChart(),
-                TransactionsList(
-                  transactions: transactions,
-                  deleteTransaction: deleteTransaction,
-                )
-              ],
+      ],
+    );
+
+    final double appHeight =
+        MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top;
+
+    return Scaffold(
+      appBar: appBar,
+      body: Container(
+        margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            transactions.length >= 7
+                ? Container(
+                    height: appHeight * 0.3,
+                    child: Chart(
+                      transactions: getWeeklyTransactions(),
+                      minExpenses:
+                          getMaxMinValue(transaction: transactions, min: true),
+                      maxExpenses:
+                          getMaxMinValue(transaction: transactions, max: true),
+                    ),
+                  )
+                : Container(
+                    height: appHeight * 0.3,
+                    child: EmptyChart(),
+                  ),
+            Container(
+              height: appHeight * 0.1,
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: TransactionSummary(transactions.length.toString()),
             ),
-          ),
+            Container(
+              height: appHeight * 0.60,
+              child: TransactionsList(
+                transactions: transactions,
+                deleteTransaction: deleteTransaction,
+              ),
+            )
+          ],
         ),
       ),
     );
