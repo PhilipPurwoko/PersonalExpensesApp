@@ -30,11 +30,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _ExpensesState extends State<MyHomePage> {
-  final transactions = <Transaction>[
+  static final Map<String, List<String>> generator = <String, List<String>>{
+    'jenis': <String>['Soto', 'Bakso', 'Sop', 'Sate'],
+    'bahan': <String>['Ayam', 'Kambing', 'Sapi', 'Bebek'],
+  };
+  static final _random = new Random();
+  final List<Transaction> transactions = <Transaction>[
     for (var i = 0; i < 7; i++)
       Transaction(
         id: '0',
-        name: 'Soto Ayam',
+        name: generator['jenis'][_random.nextInt(generator['jenis'].length)] +
+            ' ' +
+            generator['bahan'][_random.nextInt(generator['jenis'].length)],
         category: 'Food',
         amount: new Random().nextInt(100000),
         date: new DateTime(2021, 3, 17 - i),
@@ -119,8 +126,9 @@ class _ExpensesState extends State<MyHomePage> {
       ],
     );
 
-    final double appHeight =
-        MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top;
+    final double appHeight = MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
 
     return Scaffold(
       appBar: appBar,
@@ -134,8 +142,9 @@ class _ExpensesState extends State<MyHomePage> {
                     height: appHeight * 0.3,
                     child: Chart(
                       transactions: getWeeklyTransactions(),
-                      minExpenses:
-                          getMaxMinValue(transaction: transactions, min: true),
+                      // Jangan dihapus dulu, biarakan saja nanti tinggal uncomment kalau perlu
+                      // minExpenses:
+                      //     getMaxMinValue(transaction: transactions, min: true),
                       maxExpenses:
                           getMaxMinValue(transaction: transactions, max: true),
                     ),

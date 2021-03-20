@@ -4,12 +4,12 @@ import 'package:fl_chart/fl_chart.dart';
 
 class Chart extends StatefulWidget {
   final List<int> transactions;
-  final int minExpenses;
+  // final int minExpenses;
   final int maxExpenses;
 
   Chart({
     @required this.transactions,
-    @required this.minExpenses,
+    // @required this.minExpenses,
     @required this.maxExpenses,
   });
 
