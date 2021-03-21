@@ -50,7 +50,7 @@ class _TransactionFormState extends State<TransactionForm> {
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.all(20),
-        child: Column(
+        child: Wrap(
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

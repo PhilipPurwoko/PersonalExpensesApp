@@ -5,6 +5,7 @@ import './widgets/form/transaction_form.dart';
 import './models/transaction.dart';
 import './widgets/chart/chart.dart';
 import './widgets/chart/empty_chart.dart';
+import './widgets/transactions/transaction_count.dart';
 import './widgets/transactions/transaction_summary.dart';
 
 void main() {
@@ -43,7 +44,7 @@ class _ExpensesState extends State<MyHomePage> {
             ' ' +
             generator['bahan'][_random.nextInt(generator['jenis'].length)],
         category: 'Food',
-        amount: new Random().nextInt(100000),
+        amount: new Random().nextInt(100000) + 10000,
         date: new DateTime(2021, 3, DateTime.now().day - i),
       )
   ];
@@ -87,7 +88,7 @@ class _ExpensesState extends State<MyHomePage> {
   void showForm(BuildContext context, Widget widget) {
     showModalBottomSheet(
       context: context,
-      builder: (builder) {
+      builder: (buildContext) {
         return widget;
       },
     );
@@ -132,9 +133,6 @@ class _ExpensesState extends State<MyHomePage> {
               height: appHeight * heightPercent,
               child: Chart(
                 transactions: weeklyTransactions,
-                // Jangan dihapus dulu, biarakan saja nanti tinggal uncomment kalau perlu
-                // minExpenses:
-                //     getMaxMinValue(transaction: transactions, min: true),
                 maxExpenses:
                     getMaxMinValue(transactions: weeklyTransactions, max: true),
               ),
@@ -152,7 +150,7 @@ class _ExpensesState extends State<MyHomePage> {
       return Container(
         height: appHeight * heightPercent,
         padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-        child: TransactionSummary(transactions.length.toString()),
+        child: TransactionCount(transactions.length.toString()),
       );
     };
 
@@ -165,6 +163,8 @@ class _ExpensesState extends State<MyHomePage> {
         ),
       );
     };
+
+    List<int> transactionsInt = transactions.map((e) => e.amount).toList();
 
     return Scaffold(
       appBar: appBar,
@@ -186,7 +186,25 @@ class _ExpensesState extends State<MyHomePage> {
                     width: MediaQuery.of(context).size.width * 0.4 - 20,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      children: [chart(0.6)],
+                      children: [
+                        chart(0.6),
+                        Container(
+                          height: appHeight * 0.4,
+                          padding: EdgeInsets.all(10),
+                          child: TransactionSummary(
+                            max: getMaxMinValue(
+                              transactions: transactionsInt,
+                              max: true,
+                            ),
+                            min: getMaxMinValue(
+                              transactions: transactionsInt,
+                              min: true,
+                            ),
+                            mean: transactionsInt.reduce((a, b) => a + b) /
+                                transactionsInt.length,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Container(
