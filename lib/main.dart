@@ -15,7 +15,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Personal Expenses',
+      title: 'Smone',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -112,10 +112,10 @@ class _ExpensesState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     transactions
-        .sort((Transaction a, Transaction b) => a.date.compareTo(b.date));
+        .sort((Transaction b, Transaction a) => a.date.compareTo(b.date));
 
     final AppBar appBar = AppBar(
-      title: Text('Personal Expenses'),
+      title: Text('Smone'),
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.add),
