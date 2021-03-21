@@ -87,6 +87,7 @@ class _ExpensesState extends State<MyHomePage> {
 
   void showForm(BuildContext context, Widget widget) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (buildContext) {
         return widget;
