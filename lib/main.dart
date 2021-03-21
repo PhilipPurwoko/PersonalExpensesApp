@@ -36,7 +36,7 @@ class _ExpensesState extends State<MyHomePage> {
   };
   static final _random = new Random();
   final List<Transaction> transactions = <Transaction>[
-    for (var i = 0; i < 7; i++)
+    for (var i = 0; i < 31; i++)
       Transaction(
         id: '0',
         name: generator['jenis'][_random.nextInt(generator['jenis'].length)] +
@@ -44,7 +44,7 @@ class _ExpensesState extends State<MyHomePage> {
             generator['bahan'][_random.nextInt(generator['jenis'].length)],
         category: 'Food',
         amount: new Random().nextInt(100000),
-        date: new DateTime(2021, 3, 17 - i),
+        date: new DateTime(2021, 3, DateTime.now().day - i),
       )
   ];
 
@@ -93,24 +93,20 @@ class _ExpensesState extends State<MyHomePage> {
     );
   }
 
-  int getMaxMinValue(
-      {List<Transaction> transaction, max = false, min = false}) {
-    return transactions
-        .map((transaction) => transaction.amount)
-        .toList()
-        .reduce((curr, next) {
-      if (max) {
-        return curr > next ? curr : next;
-      } else if (min) {
-        return curr < next ? curr : next;
-      } else {
-        return curr > next ? curr : next;
-      }
-    });
+  int getMaxMinValue({List<int> transactions, max = false, min = false}) {
+    if (max) {
+      return transactions.reduce((curr, next) => curr > next ? curr : next);
+    } else if (min) {
+      return transactions.reduce((curr, next) => curr < next ? curr : next);
+    } else {
+      return transactions.reduce((curr, next) => curr < next ? curr : next);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    List<int> weeklyTransactions = getWeeklyTransactions();
+
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
 
@@ -135,12 +131,12 @@ class _ExpensesState extends State<MyHomePage> {
           ? Container(
               height: appHeight * heightPercent,
               child: Chart(
-                transactions: getWeeklyTransactions(),
+                transactions: weeklyTransactions,
                 // Jangan dihapus dulu, biarakan saja nanti tinggal uncomment kalau perlu
                 // minExpenses:
                 //     getMaxMinValue(transaction: transactions, min: true),
                 maxExpenses:
-                    getMaxMinValue(transaction: transactions, max: true),
+                    getMaxMinValue(transactions: weeklyTransactions, max: true),
               ),
             )
           : Container(
