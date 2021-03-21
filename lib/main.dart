@@ -111,8 +111,8 @@ class _ExpensesState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    transactions
-        .sort((Transaction b, Transaction a) => a.date.compareTo(b.date));
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
 
     final AppBar appBar = AppBar(
       title: Text('Smone'),
@@ -130,43 +130,81 @@ class _ExpensesState extends State<MyHomePage> {
         appBar.preferredSize.height -
         MediaQuery.of(context).padding.top;
 
+    Container Function(double) chart = (double heightPercent) {
+      return transactions.length >= 7
+          ? Container(
+              height: appHeight * heightPercent,
+              child: Chart(
+                transactions: getWeeklyTransactions(),
+                // Jangan dihapus dulu, biarakan saja nanti tinggal uncomment kalau perlu
+                // minExpenses:
+                //     getMaxMinValue(transaction: transactions, min: true),
+                maxExpenses:
+                    getMaxMinValue(transaction: transactions, max: true),
+              ),
+            )
+          : Container(
+              height: appHeight * heightPercent,
+              child: EmptyChart(),
+            );
+    };
+
+    transactions
+        .sort((Transaction b, Transaction a) => a.date.compareTo(b.date));
+
+    final Container Function(double) transactionCount = (double heightPercent) {
+      return Container(
+        height: appHeight * heightPercent,
+        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: TransactionSummary(transactions.length.toString()),
+      );
+    };
+
+    final Container Function(double) transactionList = (double heightPercent) {
+      return Container(
+        height: appHeight * heightPercent,
+        child: TransactionsList(
+          transactions: transactions,
+          deleteTransaction: deleteTransaction,
+        ),
+      );
+    };
+
     return Scaffold(
       appBar: appBar,
       body: Container(
         margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            transactions.length >= 7
-                ? Container(
-                    height: appHeight * 0.3,
-                    child: Chart(
-                      transactions: getWeeklyTransactions(),
-                      // Jangan dihapus dulu, biarakan saja nanti tinggal uncomment kalau perlu
-                      // minExpenses:
-                      //     getMaxMinValue(transaction: transactions, min: true),
-                      maxExpenses:
-                          getMaxMinValue(transaction: transactions, max: true),
+        child: isPortrait
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  chart(0.3),
+                  transactionCount(0.1),
+                  transactionList(0.6),
+                ],
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.4 - 20,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [chart(0.6)],
                     ),
-                  )
-                : Container(
-                    height: appHeight * 0.3,
-                    child: EmptyChart(),
                   ),
-            Container(
-              height: appHeight * 0.1,
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: TransactionSummary(transactions.length.toString()),
-            ),
-            Container(
-              height: appHeight * 0.60,
-              child: TransactionsList(
-                transactions: transactions,
-                deleteTransaction: deleteTransaction,
+                  Container(
+                    margin: EdgeInsets.only(left: 20),
+                    width: MediaQuery.of(context).size.width * 0.6 - 40,
+                    child: Column(
+                      children: [
+                        transactionCount(0.2),
+                        transactionList(0.8),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            )
-          ],
-        ),
       ),
     );
   }

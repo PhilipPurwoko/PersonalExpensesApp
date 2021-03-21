@@ -46,83 +46,85 @@ class _ChartState extends State<Chart> {
         color: Colors.black87,
       ),
       margin: EdgeInsets.only(top: 20),
-      padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-      child: Center(
-        child: LineChart(
-          LineChartData(
-            gridData: FlGridData(
-              show: false,
-              getDrawingVerticalLine: (value) {
-                return FlLine(
-                  color: const Color(0xff37434d),
-                  strokeWidth: 1,
-                );
-              },
-            ),
-            titlesData: FlTitlesData(
-              show: true,
-              leftTitles: SideTitles(
-                showTitles: false
-              ),
-              bottomTitles: SideTitles(
-                showTitles: true,
-                reservedSize: 22,
-                getTextStyles: (value) => const TextStyle(
-                  color: Color(0xff68737d),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                ),
-                getTitles: (value) {
-                  switch (value.toInt()) {
-                    case 0:
-                      return 'MON';
-                    case 1:
-                      return 'TUE';
-                    case 2:
-                      return 'WED';
-                    case 3:
-                      return 'THU';
-                    case 4:
-                      return 'FRI';
-                    case 5:
-                      return 'SAT';
-                    case 6:
-                      return 'SUN';
-                  }
-                  return '';
+      child: Container(
+        padding: EdgeInsets.all(20),
+        child: Center(
+          child: LineChart(
+            LineChartData(
+              gridData: FlGridData(
+                show: false,
+                getDrawingVerticalLine: (value) {
+                  return FlLine(
+                    color: const Color(0xff37434d),
+                    strokeWidth: 1,
+                  );
                 },
-                margin: 8,
               ),
-            ),
-            borderData: FlBorderData(
-              show: true,
-              border: Border.all(
-                color: const Color(0xff37434d),
-                width: 1,
-              ),
-            ),
-            minX: 0,
-            maxX: 6,
-            minY: 0,
-            maxY: widget.maxExpenses.toDouble(),
-            lineBarsData: [
-              LineChartBarData(
-                spots: getSpots(widget.transactions),
-                isCurved: true,
-                colors: gradientColors,
-                barWidth: 3,
-                isStrokeCapRound: true,
-                dotData: FlDotData(
-                  show: false,
+              titlesData: FlTitlesData(
+                show: true,
+                leftTitles: SideTitles(
+                  showTitles: false
                 ),
-                belowBarData: BarAreaData(
-                  show: true,
-                  colors: gradientColors
-                      .map((color) => color.withOpacity(0.3))
-                      .toList(),
+                bottomTitles: SideTitles(
+                  showTitles: true,
+                  reservedSize: 22,
+                  getTextStyles: (value) => const TextStyle(
+                    color: Color(0xff68737d),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                  getTitles: (value) {
+                    switch (value.toInt()) {
+                      case 0:
+                        return 'MON';
+                      case 1:
+                        return 'TUE';
+                      case 2:
+                        return 'WED';
+                      case 3:
+                        return 'THU';
+                      case 4:
+                        return 'FRI';
+                      case 5:
+                        return 'SAT';
+                      case 6:
+                        return 'SUN';
+                    }
+                    return '';
+                  },
+                  margin: 8,
                 ),
               ),
-            ],
+              borderData: FlBorderData(
+                show: true,
+                border: Border.all(
+                  color: const Color(0xff37434d),
+                  width: 1,
+                ),
+              ),
+              minX: 0,
+              maxX: 6,
+              minY: 0,
+              maxY: widget.maxExpenses.toDouble(),
+              lineBarsData: [
+                LineChartBarData(
+                  spots: getSpots(widget.transactions),
+                  isCurved: true,
+                  colors: gradientColors,
+                  barWidth: 3,
+                  isStrokeCapRound: true,
+                  dotData: FlDotData(
+                    show: false,
+                  ),
+                  belowBarData: BarAreaData(
+                    show: true,
+                    colors: gradientColors
+                        .map((color) => color.withOpacity(0.3))
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
